@@ -1,0 +1,32 @@
+# Directories
+*/figures
+origami/branches
+
+# Cluster
+smatter
+
+# Mathematica
+*.nb
+*.wl
+
+# Generated data
+*.dat
+*.txt
+
+# TeX
+*.pdf
+*.pdf_tex
+*.png
+*.svg
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Binaries
+*.so
+4bar/4bar_met
+origami/origami_met
+tests/rotor/rotor_met
+tests/utils
