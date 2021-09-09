@@ -1,5 +1,4 @@
 # Directories
-*/figures
 origami/branches
 
 # Cluster
@@ -7,7 +6,6 @@ smatter
 
 # Mathematica
 *.nb
-*.wl
 
 # Generated data
 *.dat

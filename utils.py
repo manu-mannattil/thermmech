@@ -161,7 +161,9 @@ def plot_origami(
     axis.set_xlim(np.min(coords[:, 0]), np.max(coords[:, 0]))
     axis.set_ylim(np.min(coords[:, 1]), np.max(coords[:, 1]))
     axis.set_zlim(np.min(coords[:, 2]), np.max(coords[:, 2]))
-    axis.add_collection3d(Poly3DCollection(verts, facecolors=rgb, alpha=alpha, edgecolor=edgecolor, sizes=(scale,)))
+    axis.add_collection3d(
+        Poly3DCollection(verts, facecolors=rgb, alpha=alpha, edgecolor=edgecolor, sizes=(scale, ))
+    )
 
     return axis
 
