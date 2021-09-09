@@ -27,7 +27,7 @@ with plt.rc_context(rc):
     ax.grid(True)
     ax.view_init(elev=12, azim=-60)
 
-    # axisinfo dictionary just all axss.
+    # axisinfo dictionary for all axes.
     all_axinfo = {
         "tick": {
             "inward_factor": 0,
