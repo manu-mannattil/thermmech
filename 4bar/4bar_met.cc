@@ -20,27 +20,30 @@ class FourBar {
   private:
     double a2, b2, c2, d2;
     double com_x = 0.0, com_y = 0;
-    inline double sq(double x) const { return x * x; }
+    inline double square(const double& x) const { return x * x; }
 
   public:
     double a, b, c, d;
     valarray<double> q;
-    FourBar(double a = 1.0, double b = 2.0, double c = 1.0, double d = 2.0)
+    FourBar(const double& a = 1.0, const double& b = 2.0, const double& c = 1.0,
+            const double& d = 2.0)
         : a(a), b(b), c(c), d(d) {
-        a2 = sq(a), b2 = sq(b), c2 = sq(c), d2 = sq(d);
+        a2 = square(a), b2 = square(b), c2 = square(c), d2 = square(d);
         q = {0, 0, a, 0, a + b, 0, a + b - c, 0};
     }
 
-    FourBar(double a, double b, double c, double d, valarray<double> q) : FourBar{a, b, c, d} {
+    FourBar(const double& a, const double& b, const double& c, const double& d,
+            const valarray<double>& q)
+        : FourBar{a, b, c, d} {
         this->q = q;
     }
 
     double energy() const {
         return 1 / 8.0 *
-               (sq(sq(q[2] - q[0]) + sq(q[3] - q[1]) - a2) / a2 +
-                sq(sq(q[4] - q[2]) + sq(q[5] - q[3]) - b2) / b2 +
-                sq(sq(q[6] - q[4]) + sq(q[7] - q[5]) - c2) / c2 +
-                sq(sq(q[6] - q[0]) + sq(q[7] - q[1]) - d2) / d2);
+               (square(square(q[2] - q[0]) + square(q[3] - q[1]) - a2) / a2 +
+                square(square(q[4] - q[2]) + square(q[5] - q[3]) - b2) / b2 +
+                square(square(q[6] - q[4]) + square(q[7] - q[5]) - c2) / c2 +
+                square(square(q[6] - q[0]) + square(q[7] - q[1]) - d2) / d2);
     }
 
     // The CV for the four-bar linkage are the two angles.

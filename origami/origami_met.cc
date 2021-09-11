@@ -60,14 +60,17 @@ class Origami {
   public:
     double a, b, c, d;
     valarray<double> q;
-    Origami(double a = 0.25, double b = 0.50, double c = 0.75, double d = 0.50)
+    Origami(const double& a = 0.25, const double& b = 0.50, const double& c = 0.75,
+            const double& d = 0.50)
         : a(a), b(b), c(c), d(d) {
         q = {0., 0., 0., 1., 0., 0., 1., 1., 0., 0., 1., 0., a, b, 0., c, d, 0.};
         l2 = len2(joints());
         tt = angles(joints());
     }
 
-    Origami(double a, double b, double c, double d, valarray<double> q) : Origami{a, b, c, d} {
+    Origami(const double& a, const double& b, const double& c, const double& d,
+            const valarray<double>& q)
+        : Origami{a, b, c, d} {
         this->q = q;
     }
 

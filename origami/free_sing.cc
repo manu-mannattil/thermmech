@@ -7,11 +7,10 @@
 // com: ${CXX} {} ${CXXFLAGS} -o {.}
 //
 
-
 #include "../utils.hh"
 #include <cmath>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <valarray>
 
 using namespace std;

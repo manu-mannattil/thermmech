@@ -15,15 +15,16 @@ std::uniform_real_distribution<double> unif(0, 1);
 std::normal_distribution<double> normal(0);
 
 // Generate a random uniform array of the given size with elements in [a, b].
-std::valarray<double> uranarray(const size_t size = 1, const double a = -1.0,
-                                const double b = 1.0) {
+std::valarray<double> uranarray(const size_t& size = 1, const double& a = -1.0,
+                                const double& b = 1.0) {
     std::valarray<double> v(size);
     std::generate(begin(v), end(v), [a, b]() -> double { return a + (b - a) * unif(rand_gen); });
     return v;
 }
 
 // Generate a random normal array of the given size with mean m and std s.
-std::valarray<double> nranarray(const size_t size = 1, const double m = 0, const double s = 1.0) {
+std::valarray<double> nranarray(const size_t& size = 1, const double& m = 0,
+                                const double& s = 1.0) {
     std::valarray<double> v(size);
     std::generate(begin(v), end(v), [m, s]() -> double { return m + s * normal(rand_gen); });
     return v;
@@ -33,7 +34,6 @@ std::valarray<double> nranarray(const size_t size = 1, const double m = 0, const
 template <typename T> class Metropolis {
   private:
     double dE;
-    T new_sys;
 
   public:
     size_t acc, tot;
@@ -46,11 +46,11 @@ template <typename T> class Metropolis {
     std::string move;
     double eps;
     bool center;
-    Metropolis(T sys, const double beta = 1.0, const std::string move = "uniform",
-               const double eps = 1.0, const bool center = false)
+    Metropolis(const T& sys, const double& beta = 1.0, const std::string& move = "uniform",
+               const double& eps = 1.0, const bool& center = false)
         : sys(sys), beta(beta), move(move), eps(eps), center(center) {
         E = sys.energy();
-        acc = 0, tot = 0;
+        acc = 0, tot = 0, dE = 0;
     }
 
     void step() {
@@ -79,8 +79,8 @@ template <typename T> class Metropolis {
         tot += 1;
     }
 
-    std::vector<std::valarray<double>> sample(const long n = 1000, const long rate = 1,
-                                              const float print_every = 1) {
+    std::vector<std::valarray<double>> sample(const long& n = 1000, const long& rate = 1,
+                                              const float& print_every = 1) {
         std::vector<std::valarray<double>> result(n);
         int print_step = n * print_every / 100;
 

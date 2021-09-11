@@ -14,7 +14,6 @@
 #include <iostream>
 
 using namespace std;
-using arr = std::valarray<double>;
 
 class Rotor {
   private:
@@ -22,17 +21,17 @@ class Rotor {
 
   public:
     double a;
-    arr q;
-    Rotor(double a = 1.0) : a(a) {
+    valarray<double> q;
+    Rotor(const double& a = 1.0) : a(a) {
         a2 = a * a;
         q = {1, 0};
     }
 
-    Rotor(double a, arr q) : Rotor(a) { this->q = q; }
+    Rotor(const double& a, const valarray<double>& q) : Rotor(a) { this->q = q; }
 
     double energy() const { return pow(((q[0] * q[0] + q[1] * q[1]) - a2), 2); }
 
-    arr cv() const { return {q[0], q[1], atan2(q[1], q[0])}; }
+    valarray<double> cv() const { return {q[0], q[1], atan2(q[1], q[0])}; }
 };
 
 int main(int argc, const char* argv[]) {
@@ -42,7 +41,7 @@ int main(int argc, const char* argv[]) {
     auto samples = 500 * 1000;
     auto rate = 100;
 
-    arr q = {0, 1};
+    valarray<double> q = {0, 1};
     Rotor r(1, q);
 
     // At beta = 10, a step size of 0.35 gives ~50% acceptance rate.
