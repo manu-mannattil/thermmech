@@ -124,7 +124,7 @@ def plot_origami(
 ):
     """Plot an origami."""
     from matplotlib.colors import LightSource, hsv_to_rgb
-    from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
+    from mpl_toolkits.mplot3d.art3d import Poly3DCollection
     from mpl_toolkits.mplot3d.axes3d import Axes3D
 
     if not isinstance(axis, Axes3D):
@@ -264,3 +264,203 @@ class BranchParam:
             qq = qq[i]
 
         return pp, qq
+
+def triinter(A, B, points=True):
+    """Check if the given triangles have an intersection.
+
+    Checks if the given triangles have an intersection [1].  The choice
+    of the variable names is inspired by the original paper.
+
+    Parameters
+    ----------
+    A : array_like
+        Three vertices of triangle A.
+    B : array_like
+        Three vertices of triangle B.
+    points : bool, optional (default = True)
+        Return the intersection point.
+
+    Returns
+    -------
+    intersect : bool
+        True if the two triangles have an intersection.
+    T1 : ndarray or None
+        First intersection point.
+    T2 : ndarray or None
+        Second intersection point.
+
+    Notes
+    -----
+
+    - Intersections between coplanar triangles will not be detected.
+      For triangulated origami, this means that an intersection of two
+      faces that share an edge will not be caught.
+
+    - Two non-intersecting triangles will be deemed as intersecting if
+      a triangle's side lies in the plane of the other triangle.  In
+      Monte Carlo simulations this shouldn't be much of an issue since
+      such occurrences are probabilistically almost impossible.
+
+    - Another case of degeneracy is when the triangles share a common
+      vertex.  To avoid counting this as an intersection, order the
+      vertices in A and B such that the first vertex in both correspond
+      to the common one.
+
+    [1]: Tropp et al., Comp. Anim. Virtual Worlds 17, 527 (2006)
+         https://doi.org/10.1002/cav.115
+    """
+    A, B = np.asarray(A), np.asarray(B)
+
+    # Directed edges of triangle A.
+    q = [A[1] - A[0], A[2] - A[0], A[2] - A[1]]
+
+    # Directed edges of triangle B.
+    #   P = B[0]
+    p = [B[1] - B[0], B[2] - B[0]]
+
+    # Vector r.  Note that r0 = r1, and r2 is only needed for computing
+    # det(A(r2)), which is equal to det(A(r0)) - det(A(q0)).
+    r = A[0] - B[0]
+
+    # Stage 1 --------------------------------------------------------------
+
+    # Minors of the determinant.
+    M = [
+        p[0][1] * p[1][2] - p[0][2] * p[1][1], p[0][0] * p[1][2] - p[0][2] * p[1][0],
+        p[0][0] * p[1][1] - p[0][1] * p[1][0]
+    ]
+
+    # Determinants A(-q_i).
+    Aq = [
+        -M[0] * q[0][0] + M[1] * q[0][1] - M[2] * q[0][2],
+        -M[0] * q[1][0] + M[1] * q[1][1] - M[2] * q[1][2], 0
+    ]
+    Aq[2] = Aq[1] - Aq[0]
+
+    # Determinants A(r_i).
+    Ar = [M[0] * r[0] - M[1] * r[1] + M[2] * r[2], 0, 0]
+    Ar[1] = Ar[0]
+    Ar[2] = Ar[0] - Aq[0]
+
+    # Find legal beta indices.  We want to avoid two betas with a value
+    # of zero.  This is to ensure that the case where A and B share
+    # a common vertex, but don't have any other intersection points is
+    # not considered as an intersection.
+    i, j, nozero = None, None, True
+    for k in range(3):
+        if Aq[k] != 0 and Ar[k] * Aq[k] >= 0 and Ar[k] * Aq[k] <= Aq[k] * Aq[k]:
+            if i is None:
+                i = k
+            elif Ar[k] != 0 or (Ar[k] == 0 and nozero):
+                j = k
+                break
+            if Ar[k] == 0:
+                nozero = False
+
+    # Stage 2 --------------------------------------------------------------
+
+    # Bail out if there aren't at least two legal betas.
+    if i is None or j is None:
+        return False, None, None
+
+    # Stage 3 --------------------------------------------------------------
+
+    # Find one point of intersection T and the line segment t.
+    #   Q = [A[0], A[0], A[1]]
+    #   Q[i] = A[ind[i]]
+    #   beta[i] = Ar[i] / Aq[i]
+    ind = [0, 0, 1]
+    T = A[ind[i]] + Ar[i] / Aq[i] * q[i]
+    t = A[ind[j]] + Ar[j] / Aq[j] * q[j] - T
+
+    # Stage 4 --------------------------------------------------------------
+
+    R = T - B[0]  # for i = 1, 2.
+    S = R - p[0]  # for i = 3.
+
+    # Common determinants for both the gammas and deltas that appear in the
+    # denominator.  If there is a common vertex between the two triangles, and
+    # that vertex is chosen a Q0, then there won't be any valid delta since all
+    # Ci will be zero (as t = 0).
+    C = [-t[0] * p[0][1] + t[1] * p[0][0], -t[0] * p[1][1] + t[1] * p[1][0], 0]
+    C[2] = C[1] - C[0]
+
+    # Determinants for the deltas.  Note that we only use the first two
+    # coordinates of S and R since the system of equations is overdetermined.
+    D = [-t[0] * R[1] + t[1] * R[0], 0, -t[0] * S[1] + t[1] * S[0]]
+    D[1] = D[0]
+
+    # Determinants for the gammas.
+    G = [
+        R[0] * p[0][1] - R[1] * p[0][0], R[0] * p[1][1] - R[1] * p[1][0],
+        S[0] * (p[1][1] - p[0][1]) - S[1] * (p[1][0] - p[0][0])
+    ]
+
+    # Find legal delta indices.  Again, avoid the case where there are
+    # two zeros.
+    i, j, nozero = None, None, True
+    for k in range(3):
+        if C[k] != 0 and D[k] * C[k] >= 0 and D[k] * C[k] <= C[k] * C[k]:
+            if i is None:
+                i = k
+            elif D[k] != 0 or (D[k] == 0 and nozero):
+                j = k
+                break
+            if D[k] == 0:
+                nozero = False
+
+    # Stage 5 --------------------------------------------------------------
+
+    # There has to be at least two deltas for an intersection.
+    if i is None or j is None:
+        return False, None, None
+
+    intersect = False
+
+    # The number of legal gammas tell us about the kind of
+    # intersection.  'valid' is one of the valid indices.
+    legal, valid = 0, None
+    for k in (i, j):
+        if G[k] * C[k] >= 0 and G[k] * C[k] <= C[k] * C[k]:
+            legal += 1
+            valid = k
+
+    # - If there are no legal gammas, but the gammas have opposite
+    #   signs, then it's a Case II intersection with the penetrating
+    #   smaller triangle being A and the bigger triangle being B.
+    #
+    # - If there is only one legal gamma, then it's a Case I intersection.
+    #
+    # - If there are two legal gammas, then it's a Case II intersection
+    #   with the bigger triangle being A and the smaller triangle (which
+    #   penetrates A) being B.
+    if legal > 0 or G[i] * C[i] * G[j] * C[j] <= 0:
+        intersect = True
+
+    # Stage 6 --------------------------------------------------------------
+
+    if intersect and points:
+        # Function to compute an intersection point that falls on the edge of B.
+        X = lambda i: B[0] + p[0] + D[i] / C[i] * (p[1] - p[0]) if i == 2 else B[0] + D[i] / C[i] * p[i]
+
+        if legal == 0:
+            return intersect, T, T + t
+        elif legal == 1:
+            # Even though X(i) which lies on the edge of B, is always
+            # a point of intersection, only one of T and T + t is a point
+            # of intersection.  To find out which one is the actual point
+            # of intersection, see which one lies inside B.  First check if
+            # T + t lies inside B by computing the alphas from known
+            # determinants: alpha_0, alpha_1 = (G[1] - C[1]) / M[2], (C[0] - G[0]) / M[2]
+            # If that fails, T is the intersection point.
+            if ((G[1] - C[1]) * M[2] >= 0 and (C[0] - G[0]) * M[2] >= 0
+                and (G[1] - G[0] + C[0] - C[1]) * M[2] <= M[2] * M[2]):
+                return intersect, X(valid), T + t
+            else:
+                return intersect, X(valid), T
+        else:
+            # Since A is the bigger triangle, both the intersection points
+            # lie on the edges of B.
+            return intersect, X(i), X(j)
+    else:
+        return intersect, None, None
