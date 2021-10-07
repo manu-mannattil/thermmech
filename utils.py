@@ -415,7 +415,7 @@ def triinter(A, B, points=True):
     if i is None or j is None:
         return False, None, None
 
-    intersect = False
+    res = False
 
     # The number of legal gammas tell us about the kind of
     # intersection.  'valid' is one of the valid indices.
@@ -435,16 +435,16 @@ def triinter(A, B, points=True):
     #   with the bigger triangle being A and the smaller triangle (which
     #   penetrates A) being B.
     if legal > 0 or G[i] * C[i] * G[j] * C[j] <= 0:
-        intersect = True
+        res = True
 
     # Stage 6 --------------------------------------------------------------
 
-    if intersect and points:
+    if res and points:
         # Function to compute an intersection point that falls on the edge of B.
         X = lambda i: B[0] + p[0] + D[i] / C[i] * (p[1] - p[0]) if i == 2 else B[0] + D[i] / C[i] * p[i]
 
         if legal == 0:
-            return intersect, T, T + t
+            return res, T, T + t
         elif legal == 1:
             # Even though X(i) which lies on the edge of B, is always
             # a point of intersection, only one of T and T + t is a point
@@ -455,12 +455,12 @@ def triinter(A, B, points=True):
             # If that fails, T is the intersection point.
             if ((G[1] - C[1]) * M[2] >= 0 and (C[0] - G[0]) * M[2] >= 0
                 and (G[1] - G[0] + C[0] - C[1]) * M[2] <= M[2] * M[2]):
-                return intersect, X(valid), T + t
+                return res, X(valid), T + t
             else:
-                return intersect, X(valid), T
+                return res, X(valid), T
         else:
             # Since A is the bigger triangle, both the intersection points
             # lie on the edges of B.
-            return intersect, X(i), X(j)
+            return res, X(i), X(j)
     else:
-        return intersect, None, None
+        return res, None, None

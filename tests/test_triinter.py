@@ -2,11 +2,12 @@
 """Fuzz testing for the triangle-triangle intersection test."""
 
 import numpy as np
-from utils import triinter
 from numpy.testing import assert_allclose, run_module_suite
+from subprocess import check_output
+from utils import triinter
 
 # Number of random triangles to generate in each case.
-N = 10 * 1000
+N = 25 * 1000
 
 def plot(A, B):
     import matplotlib.pyplot as plt
@@ -23,7 +24,7 @@ def plot(A, B):
 
     plt.show()
 
-def triinter_sort(A, B):
+def triinter_py(A, B):
     """Consistently sort the intersection points for testing purposes."""
     result, T1, T2 = triinter(A, B)
     if result and T1[0] < T2[0]:
@@ -33,7 +34,20 @@ def triinter_sort(A, B):
 
 def triinter_cpp(A, B):
     """C++ version of triinter."""
-    stod = lambda s: None if s == "nan" else float(s)
+    # Everything is very kludgy.  Please don't judge.
+    args = ["./test_triinter"]
+    args.extend([str(n) for n in A.flatten()])
+    args.extend([str(n) for n in B.flatten()])
+    output = check_output(args, universal_newlines=True).split("\t")
+    if output[0] == '1':
+        T1 = np.array([float(s) for s in output[1:4]])
+        T2 = np.array([float(s) for s in output[4:-1]])
+        if T1[0] < T2[0]:
+            return True, T1, T2
+        else:
+            return True, T2, T1
+    else:
+        return False, None, None
 
 def make_inter(case=1):
     """Make two random triangles in R^3 that intersect at known points."""
@@ -83,7 +97,7 @@ def make_inter(case=1):
     if np.random.randint(2) == 1:
         A, B = B, A
 
-    # Sort the same way as triinter_sort() does.
+    # Sort the same way as triinter_py() does.
     if T1[0] < T2[0]:
         return T1, T2, A, B
     else:
@@ -155,7 +169,7 @@ def make_inter_common():
     if np.random.randint(2) == 1:
         A, B = B, A
 
-    # Sort the same way as triinter_sort() does.
+    # Sort the same way as triinter_py() does.
     if b1[0] < a2[0]:
         return b1, a2, A, B
     else:
@@ -235,21 +249,18 @@ def make_nointer_common():
 
     return A, B
 
-def test_inter_case1():
-    for i in range(N):
-        T1, T2, A, B = make_inter(case=1)
-        result, X1, X2 = triinter_sort(A, B)
-        assert result == True
-        assert_allclose(T1, X1)
-        assert_allclose(T2, X2)
-
-def test_inter_case2():
-    for i in range(N):
-        T1, T2, A, B = make_inter(case=2)
-        result, X1, X2 = triinter_sort(A, B)
-        assert result == True
-        assert_allclose(T1, X1)
-        assert_allclose(T2, X2)
+def test_inter():
+    for case in (1, 2):
+        for i in range(N):
+            T1, T2, A, B = make_inter(case)
+            result, X1, X2 = triinter_py(A, B)
+            assert result == True
+            assert_allclose(T1, X1)
+            assert_allclose(T2, X2)
+            result, X1, X2 = triinter_cpp(A, B)
+            assert result == True
+            assert_allclose(T1, X1)
+            assert_allclose(T2, X2)
 
 def test_inter_1p():
     for i in range(N):
@@ -258,11 +269,19 @@ def test_inter_1p():
         assert result == True
         assert_allclose(T, X1, atol=1e-5, rtol=1e-5)
         assert_allclose(T, X2, atol=1e-5, rtol=1e-5)
+        result, X1, X2 = triinter_cpp(A, B)
+        assert result == True
+        assert_allclose(T, X1, atol=1e-5, rtol=1e-5)
+        assert_allclose(T, X2, atol=1e-5, rtol=1e-5)
 
 def test_inter_common():
     for i in range(N):
         T1, T2, A, B = make_inter_common()
-        result, X1, X2 = triinter_sort(A, B)
+        result, X1, X2 = triinter_py(A, B)
+        assert result == True
+        assert_allclose(T1, X1, atol=1e-5, rtol=1e-5)
+        assert_allclose(T2, X2, atol=1e-5, rtol=1e-5)
+        result, X1, X2 = triinter_cpp(A, B)
         assert result == True
         assert_allclose(T1, X1, atol=1e-5, rtol=1e-5)
         assert_allclose(T2, X2, atol=1e-5, rtol=1e-5)
@@ -271,16 +290,19 @@ def test_nointer():
     for i in range(N):
         A, B = make_nointer()
         assert triinter(A, B)[0] == False
+        assert triinter_cpp(A, B)[0] == False
 
 def test_nointer_beta():
     for i in range(N):
         A, B = make_nointer_beta()
         assert triinter(A, B)[0] == False
+        assert triinter_cpp(A, B)[0] == False
 
 def test_nointer_common():
     for i in range(N):
         A, B = make_nointer_common()
         assert triinter(A, B)[0] == False
+        assert triinter_cpp(A, B)[0] == False
 
 if __name__ == "__main__":
     run_module_suite()
