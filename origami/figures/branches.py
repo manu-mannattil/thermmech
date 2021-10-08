@@ -10,9 +10,10 @@ rc = {
     "mmmpl.doc": "aps",
     "mmmpl.square": 0,
     "mmmpl.tex": True,
-    "mmmpl.tex.font": "newtx",
+    "mmmpl.tex.font": "fourier",
     "xtick.minor.visible": False,
     "ytick.minor.visible": False,
+    "figure.figsize": [2.75, 1.7]
 }
 
 # Angle ranges: -180/180, -105/105, -105/105.
@@ -106,9 +107,9 @@ with plt.rc_context(rc):
     # ax.set_zlabel(r"$\theta_3$", labelpad=-8)
 
     # Override matplotlib's potato-quality label placement.
-    ax.text(60, -200, -165, r"$\theta_1$", horizontalalignment="center")
-    ax.text(200, 30, -195, r"$\theta_2$", horizontalalignment="center")
-    ax.text(-200, -200, 5, r"$\theta_3$", horizontalalignment="center")
+    ax.text(60, -200, -175, r"$\theta_1$", horizontalalignment="center")
+    ax.text(200, 30, -205, r"$\theta_2$", horizontalalignment="center")
+    ax.text(-215, -200, 0, r"$\theta_3$", horizontalalignment="center")
 
     ax.patch.set_alpha(0)
     ax.set_box_aspect((1.35, 1.35, 1))
@@ -117,7 +118,6 @@ with plt.rc_context(rc):
         "branches.pdf",
         crop=True,
         transparent=True,
-        bbox_inches="tight",
         facecolor="none",
         pad_inches=0,
     )

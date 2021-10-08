@@ -9,14 +9,15 @@ from origami import *
 rc = {
     "mmmpl.doc": "aps",
     "mmmpl.tex": True,
-    "mmmpl.tex.font": "newtx",
+    "mmmpl.tex.font": "fourier",
+    "figure.figsize": [2.75, 1.7]
 }
 
 with plt.rc_context(rc):
     fig, ax = plt.subplots()
 
     # Numerical.
-    x1, y1 = np.loadtxt("../free_numer_10000.dat", unpack=True)
+    x1, y1 = np.loadtxt("../free_numer.dat", unpack=True)
     ax.plot(x1, y1 - y1[int(len(y1) / 2)], "k", label="numerical")
 
     # Asymptotic (harmonic).
@@ -25,7 +26,7 @@ with plt.rc_context(rc):
     ax.plot(x2, y2, "C0--", label="harmonic")
 
     # Asymptotic (quartic).
-    x3, y3 = np.loadtxt("../free_sing_10000.dat", unpack=True)
+    x3, y3 = np.loadtxt("../free_sing.dat", unpack=True)
     x3 = np.concatenate([-x3[::-1][:-1], x3])
     y3 = y3 - y3[0]
     y3 = np.concatenate([y3[::-1][:-1], y3])
@@ -36,10 +37,10 @@ with plt.rc_context(rc):
     ax.set_xticklabels([r"$-\pi$", r"$-\pi/2$", r"$0$", r"$\pi/2$", r"$\pi$"])
     ax.set_xticks([-180, -90, 0, 90, 180])
 
-    ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{\theta}_1}(\theta_1)$")
+    ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{\theta}_1}(\theta_1)$", labelpad=-2)
     ax.set_ylim((-1, 4))
 
-    ax.legend(loc=(0.02, 0.05))
+    ax.legend(loc=(0.02, 0.02))
 
     inset = fig.add_axes([0.342, 0.62, 0.34, 0.22])
     for item in ([inset.title, inset.xaxis.label, inset.yaxis.label] +

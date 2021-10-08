@@ -58,7 +58,7 @@ class Origami {
 
     inline bool faceinter(const std::vector<std::valarray<double>>& A,
                           const std::vector<std::valarray<double>>& B) {
-        return triinter(A, B).r;
+        return triinter(A, B, false).r;
     }
 
   public:
@@ -105,7 +105,7 @@ class Origami {
         // If at least one angle has changed sign and if the new/old angle is
         // larger than 90, return NaN because it indicates a face crossing.
         for (auto i = 0; i < 7; i++)
-            if (diffsign(aa[i], tt[i]) and (abs(aa[i]) > 90 || abs(tt[i]) > 90))
+            if (diffsign(aa[i], tt[i]) and (abs(aa[i]) > 90 or abs(tt[i]) > 90))
                 return nan("");
 
         // Only check for face intersections once the origami is somewhat folded.

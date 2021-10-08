@@ -3,7 +3,7 @@
 // This file can be compiled with com: https://is.gd/compileanything
 //
 // com: : ${CXX:=c++}
-// com: : ${CXXFLAGS:=-std=c++11 -Wall -Wextra -Werror -fopenmp -Ofast -static -I .}
+// com: : ${CXXFLAGS:=-std=c++11 -Wall -Wextra -Werror -fopenmp -Ofast -static}
 // com: ${CXX} {} ${CXXFLAGS} -o {.}
 //
 
