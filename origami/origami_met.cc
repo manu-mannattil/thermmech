@@ -3,7 +3,7 @@
 // This file can be compiled with com: https://is.gd/compileanything
 //
 // com: : ${CXX:=c++}
-// com: : ${CXXFLAGS:=-std=c++11 -Wall -Wextra -Werror -Ofast -static -I .}
+// com: : ${CXXFLAGS:=-std=c++11 -Wall -Wextra -Werror -Ofast -static}
 // com: ${CXX} {} ${CXXFLAGS} -o {.}
 //
 
@@ -21,10 +21,9 @@ class Origami {
   private:
     valarray<double> l2; // length-square of all bars
     valarray<double> tt; // fold angles
-
     // Do the doubles a and b have different signs?
     bool diffsign(const double& a, const double& b) {
-        if ((a >= 0 && b >= 0) || (a < 0 && b < 0))
+        if ((a >= 0 and b >= 0) or (a < 0 and b < 0))
             return false;
         else
             return true;
@@ -55,6 +54,11 @@ class Origami {
         l[9] = dot(r[5] - r[2], r[5] - r[2]);
         l[10] = dot(r[5] - r[4], r[5] - r[4]);
         return l;
+    }
+
+    inline bool faceinter(const std::vector<std::valarray<double>>& A,
+                          const std::vector<std::valarray<double>>& B) {
+        return triinter(A, B).r;
     }
 
   public:
@@ -99,10 +103,30 @@ class Origami {
         valarray<double> aa = angles(r);
 
         // If at least one angle has changed sign and if the new/old angle is
-        // larger than 100, return NaN because it indicates a face crossing.
+        // larger than 90, return NaN because it indicates a face crossing.
         for (auto i = 0; i < 7; i++)
-            if (diffsign(aa[i], tt[i]) && (abs(aa[i]) > 100 || abs(tt[i]) > 100))
+            if (diffsign(aa[i], tt[i]) and (abs(aa[i]) > 90 || abs(tt[i]) > 90))
                 return nan("");
+
+        // Only check for face intersections once the origami is somewhat folded.
+        if (abs(aa).min() > 30 and
+            (faceinter({{q[15], q[16], q[17]}, {q[0], q[1], q[2]}, {q[3], q[4], q[5]}},
+                       {{q[15], q[16], q[17]}, {q[6], q[7], q[8]}, {q[12], q[13], q[14]}}) or
+             faceinter({{q[0], q[1], q[2]}, {q[3], q[4], q[5]}, {q[15], q[16], q[17]}},
+                       {{q[0], q[1], q[2]}, {q[12], q[13], q[14]}, {q[9], q[10], q[11]}}) or
+             faceinter({{q[6], q[7], q[8]}, {q[15], q[16], q[17]}, {q[3], q[4], q[5]}},
+                       {{q[6], q[7], q[8]}, {q[9], q[10], q[11]}, {q[12], q[13], q[14]}}) or
+             faceinter({{q[15], q[16], q[17]}, {q[3], q[4], q[5]}, {q[6], q[7], q[8]}},
+                       {{q[15], q[16], q[17]}, {q[12], q[13], q[14]}, {q[0], q[1], q[2]}}) or
+             faceinter({{q[12], q[13], q[14]}, {q[15], q[16], q[17]}, {q[6], q[7], q[8]}},
+                       {{q[12], q[13], q[14]}, {q[9], q[10], q[11]}, {q[0], q[1], q[2]}}) or
+             faceinter({{q[12], q[13], q[14]}, {q[6], q[7], q[8]}, {q[9], q[10], q[11]}},
+                       {{q[12], q[13], q[14]}, {q[0], q[1], q[2]}, {q[15], q[16], q[17]}}) or
+             faceinter({{q[0], q[1], q[2]}, {q[3], q[4], q[5]}, {q[15], q[16], q[17]}},
+                       {{q[6], q[7], q[8]}, {q[9], q[10], q[11]}, {q[12], q[13], q[14]}}) or
+             faceinter({{q[3], q[4], q[5]}, {q[6], q[7], q[8]}, {q[15], q[16], q[17]}},
+                       {{q[0], q[1], q[2]}, {q[12], q[13], q[14]}, {q[9], q[10], q[11]}})))
+            return nan("");
 
         // Update the angles before returning.  New angles would differ from
         // old angles only if q has changed.
@@ -117,7 +141,7 @@ int main(int argc, const char* argv[]) {
     // ridiculous sampling rate if we want a clean free-energy landscape using
     // the Metropolis algorithm.
     auto samples = 500 * 1000;
-    auto rate = 15 * 1000;
+    auto rate = 10 * 1000;
 
     Origami og;
     assert(og.energy() == 0);

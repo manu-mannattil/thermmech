@@ -282,7 +282,7 @@ def triinter(A, B, points=True):
 
     Returns
     -------
-    intersect : bool
+    res : bool
         True if the two triangles have an intersection.
     T1 : ndarray or None
         First intersection point.

@@ -1,20 +1,54 @@
 # -*- coding: utf-8 -*-
+"""Parameterize the one-dimensional branches of the origami.
+
+This script numerically parameterizes the four one-dimensional branches
+(as one-dimensional curves embedded in a twelve-dimensional ambient
+space) of an origami made by triangulating a unit square.
+"""
 
 import numpy as np
 import os
 from origami import *
 from utils import *
 
-def hit(qq, check_against=5):
-    """Find the point when any two faces of the origami hit each other."""
+def hit(qq, start=50):
+    """Find the point (index) when any two faces of the origami hit each other."""
+    # First, find when any two faces that share an edge have an intersection.
     aa = np.apply_along_axis(angles, 1, qq)
-    sign = np.array([np.sign(aa[check_against]) * a for a in aa])
+    sign = np.array([np.sign(aa[start]) * a for a in aa])
+
     try:
         switch = np.where(sign < 0)[0][0]
     except IndexError as e:
         raise RuntimeError("Angle signs unchanged.  Increase 'max_steps'.")
 
-    return switch
+    # Now, look at faces that share a vertex and faces that share nothing.
+    faceinter = lambda A, B: triinter(A, B, False)[0]
+    for i, q in enumerate(qq[start:]):
+        if (
+            # Faces that share a vertex.
+            faceinter([[q[10], q[11], 0], [0, 0, 0], [q[0], 0, 0]],
+                      [[q[10], q[11], 0], [q[1], q[2], q[3]], [q[7], q[8], q[9]]])
+            or faceinter([[0, 0, 0], [q[0], 0, 0], [q[10], q[11], 0]],
+                         [[0, 0, 0], [q[7], q[8], q[9]], [q[4], q[5], q[6]]])
+            or faceinter([[q[1], q[2], q[3]], [q[10], q[11], 0], [q[0], 0, 0]],
+                         [[q[1], q[2], q[3]], [q[4], q[5], q[6]], [q[7], q[8], q[9]]])
+            or faceinter([[q[10], q[11], 0], [q[0], 0, 0], [q[1], q[2], q[3]]],
+                         [[q[10], q[11], 0], [q[7], q[8], q[9]], [0, 0, 0]])
+            or faceinter([[q[7], q[8], q[9]], [q[10], q[11], 0], [q[1], q[2], q[3]]],
+                         [[q[7], q[8], q[9]], [q[4], q[5], q[6]], [0, 0, 0]])
+            or faceinter([[q[7], q[8], q[9]], [q[1], q[2], q[3]], [q[4], q[5], q[6]]],
+                         [[q[7], q[8], q[9]], [0, 0, 0], [q[10], q[11], 0]])
+
+            # Faces that share nothing.
+            or faceinter([[0, 0, 0], [q[0], 0, 0], [q[10], q[11], 0]],
+                         [[q[1], q[2], q[3]], [q[4], q[5], q[6]], [q[7], q[8], q[9]]])
+            or faceinter([[q[0], 0, 0], [q[1], q[2], q[3]], [q[10], q[11], 0]],
+                         [[0, 0, 0], [q[7], q[8], q[9]], [q[4], q[5], q[6]]])
+        ):
+            break
+
+    return min(start + i, switch)
 
 def metric(p, qq):
     """Square-root of the metric tensor."""
@@ -28,7 +62,7 @@ def metric(p, qq):
 # two faces hit each other.  'max_steps' is a number slighter larger than the
 # one required to achieve max_angle when parameterizing in arc length.
 BRANCHES = {
-    "branch1": (b1, 116.9, 3200),
+    "branch1": (b1, 59.9, 3200),
     "branch2": (b2, 116.9, 2500),
     "branch3": (b3, 116.9, 1800),
     "branch4": (b4, 179.9, 1600),

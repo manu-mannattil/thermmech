@@ -47,7 +47,7 @@ template <typename T> class Metropolis {
     std::string move;
     double eps;
     bool center;
-    Metropolis(const T& sys, const double& beta = 1.0, const std::string& move = "uniform",
+    Metropolis(T sys, const double& beta = 1.0, const std::string& move = "uniform",
                const double& eps = 1.0, const bool& center = false)
         : sys(sys), beta(beta), move(move), eps(eps), center(center) {
         E = sys.energy();
@@ -63,7 +63,7 @@ template <typename T> class Metropolis {
 
         dE = new_sys.energy() - E;
 
-        if (dE <= 0 || unif(rand_gen) <= std::exp(-beta * dE)) {
+        if (dE <= 0 or unif(rand_gen) <= std::exp(-beta * dE)) {
             sys = new_sys;
 
             // This isn't a center-of-mass centering of the mechanism.
@@ -307,7 +307,7 @@ Result triinter(const std::vector<std::valarray<double>>& A,
             res.T1 = T, res.T2 = T + t;
             break;
         case 1:
-            // Even though X(i) which lies on the edge of B, is always
+            // Even though X(i), which lies on the edge of B, is always
             // a point of intersection, only one of T and T + t is a point
             // of intersection.  To find out which one is the actual point
             // of intersection, see which one lies inside B.  First check if
