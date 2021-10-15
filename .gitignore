@@ -11,7 +11,9 @@ smatter
 *.dat
 *.txt
 
-# TeX
+# Images/media
+*.gif
+*.mp4
 *.pdf
 *.pdf_tex
 *.png
@@ -28,3 +30,4 @@ __pycache__/
 origami/origami_met
 tests/rotor/rotor_met
 tests/utils
+tests/test_triinter
