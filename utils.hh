@@ -19,7 +19,7 @@ std::normal_distribution<double> normal(0);
 std::valarray<double> uranarray(const size_t& size = 1, const double& a = -1.0,
                                 const double& b = 1.0) {
     std::valarray<double> v(size);
-    std::generate(begin(v), end(v), [a, b]() -> double { return a + (b - a) * unif(rand_gen); });
+    std::generate(begin(v), end(v), [&a, &b]() -> double { return a + (b - a) * unif(rand_gen); });
     return v;
 }
 
@@ -27,7 +27,7 @@ std::valarray<double> uranarray(const size_t& size = 1, const double& a = -1.0,
 std::valarray<double> nranarray(const size_t& size = 1, const double& m = 0,
                                 const double& s = 1.0) {
     std::valarray<double> v(size);
-    std::generate(begin(v), end(v), [m, s]() -> double { return m + s * normal(rand_gen); });
+    std::generate(begin(v), end(v), [&m, &s]() -> double { return m + s * normal(rand_gen); });
     return v;
 }
 

@@ -1,34 +1,33 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Parameterize a unit circle in R^2 numerically."""
 
 import matplotlib.pyplot as plt
-import numpy as np
 from utils import *
 
-def f_circle(q):
+def f(q):
     """Constraint equation that defines a circle."""
-    return np.array([np.sum(q ** 2) - 1])
+    return anp.array([(q**2).sum() - 1])
 
-
-def jac_circle(q):
-    """Jacobian of f_circle()."""
-    return 2 * np.array([q])
-
+try:
+    import autograd.numpy as anp
+    from autograd import jacobian
+    jac = jacobian(f)
+except ImportError:
+    import numpy as anp
+    def jac(q):
+        return 2 * np.array([q])
 
 def par(q):
     """Parameterize using t^3 + t, where t is the polar angle."""
     t = np.arctan2(q[1], q[0])
 
     # A simple diffeomorphism from R^1 -> R^1.
-    return t ** 3 + t
+    return t**3 + t
 
+q0 = anp.array([1.0, 0.0])
+qdot0 = anp.array([0.0, 1.0])
 
-q0 = np.array([1, 0])
-qdot0 = np.array([0, 1])
-
-bp = BranchParam(f_circle, jac_circle)
+bp = BranchParam(f, jac)
 
 qq = bp.arcpar(q0, qdot0, max_steps=629, step_length=1e-2)
 _, ax = plt.subplots()

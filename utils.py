@@ -91,6 +91,7 @@ def normangle(e, u, v, dihedral=False):
     e, u, v, = np.asarray(e), np.asarray(u), np.asarray(v)
 
     # Choose the sign of the box product [e, u, v] as the sign of the angle.
+    # Essentially, we're looking for handedness of the vectors u, v, and e.
     # We don't use np.sign() since the convention is np.sign(0) = 0.
     if np.cross(u, v).dot(e) >= 0:
         sign = 1

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from scipy.special import pbdv
@@ -13,7 +12,7 @@ xx = np.loadtxt("rotor_met.dat", usecols=(0, ))
 rc = {
     "mmmpl.doc": "standard",
     "mmmpl.tex": True,
-    "mmmpl.tex.font": "mathtime",
+    "mmmpl.tex.font": "fourier",
     "mmmpl.wide": True,
 }
 
@@ -32,7 +31,7 @@ with plt.rc_context(rc):
     ax.set_ylim((-0.8, 0.2))
     ax.set_xlim(-1.25, 1.25)
     ax.set_xlabel(r"$x$")
-    ax.set_ylabel(r"$\beta(\mathcal{A}_{\hat{x}}(x) - \mathcal{A}_{\hat{x}}(0))$")
+    ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{x}}(x)$")
 
     # Histogram
     hist = pdf(xx, x)

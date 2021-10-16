@@ -21,7 +21,8 @@ t, a = np.loadtxt("free.dat", unpack=True)
 rc = {
     "mmmpl.doc": "aps",
     "mmmpl.tex": True,
-    "mmmpl.tex.font": "newtx",
+    "mmmpl.tex.font": "fourier",
+    "figure.figsize": [3.6, 2.2]
 }
 
 with plt.rc_context(rc):
@@ -32,7 +33,7 @@ with plt.rc_context(rc):
     ax.set_xticklabels([r"$-\pi$", r"$-\pi/2$", r"$0$", r"$\pi/2$", r"$\pi$"])
     ax.set_xticks([-np.pi, -np.pi / 2, 0, np.pi / 2, np.pi])
 
-    ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{\theta}_1}(\theta_1)$", labelpad=0)
+    ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{\theta}_1}(\theta_1)$", labelpad=-3)
     ax.set_ylim((-0.5, 2))
 
     # MC free energy.
