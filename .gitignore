@@ -28,6 +28,7 @@ __pycache__/
 *.so
 4bar/4bar_met
 origami/origami_met
+origami/free_sing
 rotor/rotor_met
 tests/utils
 tests/test_triinter
