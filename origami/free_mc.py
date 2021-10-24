@@ -29,4 +29,4 @@ for name in sys.argv[1:]:
     print("Processed {}".format(name), file=sys.stderr)
 
 free = -np.log(free / free[-1])
-np.savetxt("free_numer.dat", np.array([cv, free]).T)
+np.savetxt("free_mc.dat", np.array([cv, free]).T)

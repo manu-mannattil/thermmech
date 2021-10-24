@@ -16,17 +16,28 @@ rc = {
 with plt.rc_context(rc):
     fig, ax = plt.subplots()
 
-    # Numerical.
-    x1, y1 = np.loadtxt("../free_numer.dat", unpack=True)
+    x1, y1 = np.loadtxt("../data/free_mc.dat", unpack=True) # numerical
+    x2, y2 = np.loadtxt("../data/free_harmonic.dat", unpack=True) # asymptotic (harmonic)
+    x3, y3 = np.loadtxt("../data/free_quartic_q4q7.dat", usecols=(0, 1), unpack=True) # asymptotic (quartic)
+
+    # Plot MC free energy.
     ax.plot(x1, y1 - y1[int(len(y1) / 2)], "k", label="numerical")
 
-    # Asymptotic (harmonic).
-    x2, y2 = np.loadtxt("../free_theor.dat", unpack=True)
-    y2 = y2 - y1[int(len(y1) / 2)]  # make plots coincide
+    # The harmonic approximation is invalid at theta = 0, which is the
+    # point that we use as the reference for both the quartic and MC
+    # free energies.  This means that we should subtract off either the
+    # quartic or MC free energies at theta = 0 from the harmonic free
+    # energy.  For example, using the quartic free energy,
+    # y2 = y2 - y3[0]
+
+    # But we should also realize that the quartic free energy is always
+    # slightly overestimated at theta = 0 due to the fact that the
+    # numerical integration is approximate.  So it's better to use the
+    # MC free energy as the reference.
+    y2 = (y2 - y1[int(len(y1) / 2)]) - (y2[-1] - y1[-1])
     ax.plot(x2, y2, "C0--", label="harmonic")
 
-    # Asymptotic (quartic).
-    x3, y3 = np.loadtxt("../free_sing.dat", unpack=True)
+    # Mirror the asymptotic free energy for theta < 0.
     x3 = np.concatenate([-x3[::-1][:-1], x3])
     y3 = y3 - y3[0]
     y3 = np.concatenate([y3[::-1][:-1], y3])
@@ -57,9 +68,9 @@ with plt.rc_context(rc):
 
     y2i = np.interp(x1, x2, y2)
     y1 = y1 - y1[int(len(y1) / 2)]
-    inset.plot(x1, np.abs(y2i - y1), "C0")  # regular
+    inset.plot(x1, np.abs(y2i - y1), "C0")  # harmonic
     y1i = np.interp(x3, x1, y1)
-    inset.plot(x3, np.abs(y3 - y1i), "C3")  # singular
+    inset.plot(x3, np.abs(y3 - y1i), "C3")  # quartic
 
     plt.savefig(
         "free.pdf",

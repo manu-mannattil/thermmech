@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Compute free energy using the harmonic approximation."""
+
 import numpy as np
 from origami import *
 
@@ -20,8 +22,8 @@ for i in range(1, 5):
     pp[:aa.size] += gg / dd
 
 # The landscape is symmetric wrt theta, so just mirror the plot.
-free = -np.log(pp/pp[-1])
+free = -np.log(pp)
 cv = np.concatenate([-cv[::-1], cv[1:]])
 free = np.concatenate([free[::-1], free[1:]])
 
-np.savetxt("free_theor.dat", np.array([cv, free]).T)
+np.savetxt("data/free_harmonic.dat", np.array([cv, free]).T)
