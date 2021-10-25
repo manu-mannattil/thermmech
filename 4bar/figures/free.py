@@ -16,7 +16,7 @@ a = 1
 X = np.sqrt(beta * kappa) * lamb * a / (8 * np.abs(lamb - 1))
 Y = np.abs((lamb-1) / (lamb+1))
 
-t, a = np.loadtxt("free.dat", unpack=True)
+t, a = np.loadtxt("../data/4bar_free_2.dat", unpack=True)
 
 rc = {
     "mmmpl.doc": "aps",
