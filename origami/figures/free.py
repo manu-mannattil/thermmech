@@ -23,32 +23,32 @@ with plt.rc_context(rc):
     # Plot MC free energy.
     ax.plot(x1, y1 - y1[int(len(y1) / 2)], "k", label="numerical")
 
-    # The harmonic approximation is invalid at theta = 0, which is the
+    # The harmonic approximation is invalid at rho = 0, which is the
     # point that we use as the reference for both the quartic and MC
     # free energies.  This means that we should subtract off either the
-    # quartic or MC free energies at theta = 0 from the harmonic free
+    # quartic or MC free energies at rho = 0 from the harmonic free
     # energy.  For example, using the quartic free energy,
     # y2 = y2 - y3[0]
 
     # But we should also realize that the quartic free energy is always
-    # slightly overestimated at theta = 0 due to the fact that the
+    # slightly overestimated at rho = 0 due to the fact that the
     # numerical integration is approximate.  So it's better to use the
     # MC free energy as the reference.
     y2 = (y2 - y1[int(len(y1) / 2)]) - (y2[-1] - y1[-1])
     ax.plot(x2, y2, "C0--", label="harmonic")
 
-    # Mirror the asymptotic free energy for theta < 0.
+    # Mirror the asymptotic free energy for rho < 0.
     x3 = np.concatenate([-x3[::-1][:-1], x3])
     y3 = y3 - y3[0]
     y3 = np.concatenate([y3[::-1][:-1], y3])
     ax.plot(x3, y3, "C3--", label="quartic")
 
-    ax.set_xlabel(r"$\theta_1$")
+    ax.set_xlabel(r"$\rho_1$")
     ax.set_xlim((-180, 180))
     ax.set_xticklabels([r"$-\pi$", r"$-\pi/2$", r"$0$", r"$\pi/2$", r"$\pi$"])
     ax.set_xticks([-180, -90, 0, 90, 180])
 
-    ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{\theta}_1}(\theta_1)$", labelpad=-2)
+    ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{\rho}_1}(\rho_1)$", labelpad=-2)
     ax.set_ylim((-1, 4))
 
     ax.legend(loc=(0.02, 0.02))
@@ -59,7 +59,7 @@ with plt.rc_context(rc):
         item.set_fontsize(7)
 
     inset.tick_params(axis="both", which="major", pad=1.2)
-    inset.set_xlabel(r"$\theta_1$", labelpad=1)
+    inset.set_xlabel(r"$\rho_1$", labelpad=1)
     inset.set_xlim(-180, 180)
     inset.set_xticklabels([r"$-\pi$", r"$0$", r"$\pi$"])
     inset.set_xticks([-180, 0, 180])
@@ -80,4 +80,4 @@ with plt.rc_context(rc):
         facecolor="none",
         pad_inches=0,
     )
-    plt.show()
+    polt.show()
