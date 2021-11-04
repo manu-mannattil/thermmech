@@ -2,7 +2,6 @@
 """Common utility classes and functions."""
 
 import numpy as np
-from multiprocessing import Pool
 from numba import njit
 from scipy.linalg import null_space
 
@@ -26,46 +25,6 @@ def pdf(a, bins):
     # different from the density option of np.histogram(), which normalizes the
     # histogram immediately.
     return np.histogram(a, new_bins, density=False)[0] / np.diff(new_bins)
-
-def parallel_map(func, values, args=tuple(), kwargs=dict(), processes=None):
-    """Use Pool.apply_async() to get a parallel map().
-
-    Uses Pool.apply_async() to provide a parallel version of map().
-    Unlike Pool's map() which does not let you accept arguments and/or
-    keyword arguments, this one does.
-
-    Parameters
-    ----------
-    func : function
-        This function will be applied on every element of values in
-        parallel.
-    values : array
-        Input array.
-    args : tuple, optional (default: ())
-        Additional arguments for func.
-    kwargs : dictionary, optional (default: {})
-        Additional keyword arguments for func.
-    processes : int, optional (default: None)
-        Number of processes to run in parallel.  By default, the output
-        of cpu_count() is used.
-
-    Returns
-    -------
-    results : array
-        Output after applying func on each element in values.
-    """
-    # True single core processing, in order to allow the function to be
-    # executed in a calling script.
-    if processes == 1:
-        return np.asarray([func(value, *args, **kwargs) for value in values])
-
-    pool = Pool(processes=processes)
-    results = [pool.apply_async(func, (value, ) + args, kwargs) for value in values]
-
-    pool.close()
-    pool.join()
-
-    return np.asarray([result.get() for result in results])
 
 @njit(fastmath=True)
 def normangle(e, u, v, dihedral=False):

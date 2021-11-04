@@ -30,8 +30,9 @@ with plt.rc_context(rc):
 
     ax.set_xlabel(r"$\theta_1$")
     ax.set_xlim((-np.pi, np.pi))
-    ax.set_xticklabels([r"$-\pi$", r"$-\pi/2$", r"$0$", r"$\pi/2$", r"$\pi$"])
-    ax.set_xticks([-np.pi, -np.pi / 2, 0, np.pi / 2, np.pi])
+    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, r"\pi")
+    ax.set_xticks(ticks)
+    ax.set_xticklabels(labels)
 
     ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{\theta}_1}(\theta_1)$", labelpad=-3)
     ax.set_ylim((-0.5, 2))
@@ -75,8 +76,9 @@ with plt.rc_context(rc):
     inset.tick_params(axis="both", which="major", pad=1)
     inset.set_xlabel(r"$\theta_1$", labelpad=1)
     inset.set_xlim(-np.pi, np.pi)
-    inset.set_xticklabels([r"$-\pi$", r"$0$", r"$\pi$"])
-    inset.set_xticks([-np.pi, 0, np.pi])
+    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 3, np.pi, divstr=r"\pi")
+    inset.set_xticks(ticks)
+    inset.set_xticklabels(labels)
     inset.set_ylim(0, 1)
     inset.set_yticklabels([r"$0$", r"$1$"])
 

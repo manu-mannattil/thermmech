@@ -45,8 +45,9 @@ with plt.rc_context(rc):
 
     ax.set_xlabel(r"$\rho_1$")
     ax.set_xlim((-180, 180))
-    ax.set_xticklabels([r"$-\pi$", r"$-\pi/2$", r"$0$", r"$\pi/2$", r"$\pi$"])
-    ax.set_xticks([-180, -90, 0, 90, 180])
+    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
+    ax.set_xticks(ticks * 180 / np.pi)
+    ax.set_xticklabels(labels)
 
     ax.set_ylabel(r"$\Delta\mathcal{A}_{\hat{\rho}_1}(\rho_1)$", labelpad=-2)
     ax.set_ylim((-1, 4))
@@ -61,8 +62,9 @@ with plt.rc_context(rc):
     inset.tick_params(axis="both", which="major", pad=1.2)
     inset.set_xlabel(r"$\rho_1$", labelpad=1)
     inset.set_xlim(-180, 180)
-    inset.set_xticklabels([r"$-\pi$", r"$0$", r"$\pi$"])
-    inset.set_xticks([-180, 0, 180])
+    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 3, np.pi, divstr=r"\pi")
+    inset.set_xticks(ticks * 180 / np.pi)
+    inset.set_xticklabels(labels)
     inset.set_ylim((0, 1))
     inset.set_yticklabels([r"$0$", r"$1$"])
 
@@ -80,4 +82,4 @@ with plt.rc_context(rc):
         facecolor="none",
         pad_inches=0,
     )
-    polt.show()
+    plt.show()

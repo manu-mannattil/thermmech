@@ -38,16 +38,19 @@ with plt.rc_context(rc):
         ax.plot(aa[:, i], aa[:, j], aa[:, k], "k-")
 
     ax.set_xlim3d(-190, 190)
-    ax.set_xticks([-180, -90, 0, 90, 180])
-    ax.set_xticklabels([r"$-\pi$", r"$-\pi/2$", r"$0$", r"$\pi/2$", r"$\pi$"])
+    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
+    ax.set_xticks(ticks * 180 / np.pi)
+    ax.set_xticklabels(labels)
 
     ax.set_ylim3d(-120, 120)
-    ax.set_yticks([-90, 0, 90])
-    ax.set_yticklabels([r"$-\pi/2$", r"$0$", r"$\pi/2$"])
+    ticks, labels = mmmpl.ticklabels(-np.pi/2, np.pi/2, 3, np.pi, divstr=r"\pi")
+    ax.set_yticks(ticks * 180 / np.pi)
+    ax.set_yticklabels(labels)
 
     ax.set_zlim3d(-120, 120)
-    ax.set_zticks([-90, -45, 0, 45, 90])
-    ax.set_zticklabels([r"$-\pi/2\,$", r"$-\pi/4\,$", r"$0$", r"$\pi/4\,$", r"$\pi/2$"], ha="right")
+    ticks, labels = mmmpl.ticklabels(-np.pi/2, np.pi/2, 5, np.pi, divstr=r"\pi")
+    ax.set_zticks(ticks * 180 / np.pi)
+    ax.set_zticklabels(labels)
 
     ax.xaxis.set_tick_params(pad=-3)
     ax.yaxis.set_tick_params(pad=-3)
@@ -65,11 +68,11 @@ with plt.rc_context(rc):
     ax.patch.set_alpha(0)
     ax.set_box_aspect((1.35, 1.35, 1))
 
-    plt.savefig(
-        "branches.pdf",
-        crop=True,
-        transparent=True,
-        facecolor="none",
-        pad_inches=0,
-    )
+    # plt.savefig(
+    #     "branches.pdf",
+    #     crop=True,
+    #     transparent=True,
+    #     facecolor="none",
+    #     pad_inches=0,
+    # )
     plt.show()
