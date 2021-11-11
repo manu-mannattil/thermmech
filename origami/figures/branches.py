@@ -68,11 +68,11 @@ with plt.rc_context(rc):
     ax.patch.set_alpha(0)
     ax.set_box_aspect((1.35, 1.35, 1))
 
-    # plt.savefig(
-    #     "branches.pdf",
-    #     crop=True,
-    #     transparent=True,
-    #     facecolor="none",
-    #     pad_inches=0,
-    # )
+    plt.savefig(
+        "branches.pdf",
+        crop=True,
+        transparent=True,
+        facecolor="none",
+        pad_inches=0,
+    )
     plt.show()
