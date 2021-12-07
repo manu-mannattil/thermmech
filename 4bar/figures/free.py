@@ -66,7 +66,7 @@ with plt.rc_context(rc):
     )
     ax.plot(t3, s3, "C3--")
 
-    ax.legend(loc=(0.09, 0.15))
+    ax.legend(loc=(0.12, 0.15))
 
     inset = fig.add_axes([0.6, 0.25, 0.24, 0.20])
     for item in ([inset.title, inset.xaxis.label, inset.yaxis.label] +

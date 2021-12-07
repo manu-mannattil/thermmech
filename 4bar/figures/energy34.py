@@ -31,7 +31,7 @@ with plt.rc_context(rc):
     ax.set_xlabel(r"$\theta_1$")
     ax.set_xticks([-np.pi/4, -np.pi/8, 0, np.pi/8, np.pi/4])
     ax.set_xticklabels([r"$-\pi/4$", r"$-\pi/8$", r"$0$", r"$\pi/8$", r"$\pi/4$"])
-    ax.set_ylabel(r"$\theta_2$", labelpad=0)
+    ax.set_ylabel(r"$\theta_2$", labelpad=0, rotation=0)
     ax.set_yticks([-np.pi/4, -np.pi/8, 0, np.pi/8, np.pi/4])
     ax.set_yticklabels([r"$-\pi/4$", r"$-\pi/8$", r"$0$", r"$\pi/8$", r"$\pi/4$"])
 
