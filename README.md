@@ -1,6 +1,8 @@
 Thermal Mechanisms
 ==================
 
+<!-- [![arXiv](https://shields.io/badge/arXiv-xxx-b31b1b)](http://arxiv.org/abs/xxx) -->
+
 Usage
 -----
 
@@ -19,7 +21,9 @@ that correspond to singularities in its shape space—the set of its
 lowest-energy states with distinct shapes.  This repository contains
 a set of programs to find the free-energy landscapes of bar-joint
 mechanisms using Monte Carlo methods.  It also contains a set of scripts
-to numerically parameterize one-dimensional shape spaces.
+to numerically parameterize one-dimensional shape spaces.  Also included
+are Mathematica notebooks to simplify some of the analytical
+calculations detailed in the paper.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/manu-mannattil/assets/master/thermmech/4bar.gif" alt="Four-bar linkage animation"/>

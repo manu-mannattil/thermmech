@@ -4,9 +4,6 @@ origami/branches
 # Cluster
 smatter
 
-# Mathematica
-*.nb
-
 # Generated data
 *.dat
 *.txt
