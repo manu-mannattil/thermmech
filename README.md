@@ -1,7 +1,7 @@
 Thermal Mechanisms
 ==================
 
-<!-- [![arXiv](https://shields.io/badge/arXiv-xxx-b31b1b)](http://arxiv.org/abs/xxx) -->
+[![arXiv](https://shields.io/badge/arXiv-2112.04279-b31b1b)](http://arxiv.org/abs/2112.04279)
 
 Usage
 -----
@@ -16,9 +16,9 @@ Description
 
 A [bar-joint mechanism][mech] is a deformable assembly of
 freely-rotating joints connected by stiff bars.  The free-energy
-landscape of such mechanisms is dominated by the neighborhoods of points
-that correspond to singularities in its shape space—the set of its
-lowest-energy states with distinct shapes.  This repository contains
+landscape of such a mechanism is dominated by the neighborhoods of
+points that correspond to singularities in its shape space—the set of
+its lowest-energy states with distinct shapes.  This repository contains
 a set of programs to find the free-energy landscapes of bar-joint
 mechanisms using Monte Carlo methods.  It also contains a set of scripts
 to numerically parameterize one-dimensional shape spaces.  Also included
