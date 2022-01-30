@@ -16,6 +16,8 @@
 using namespace std;
 
 // Generalized four-bar linkage with sides a, b, c, and d.
+// Vertices are arranged in clock-wise order from the "origin" vertex
+// (different from paper).
 class FourBar {
   private:
     double a2, b2, c2, d2;

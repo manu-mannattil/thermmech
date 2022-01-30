@@ -424,3 +424,48 @@ def triinter(A, B, points=True):
             return res, X(i), X(j)
     else:
         return res, None, None
+
+class SurfaceParam:
+    """Find a point cloud on a 2D manifold by doing a random walk."""
+    def __init__(self, f, jac, max_err=1e-12, max_iter=50):
+        self.f = f
+        self.jac = jac
+        self.max_err = max_err
+        self.max_iter = max_iter
+
+    def step(self, q):
+        ns = null_space(self.jac(q))
+        s = ns.dot(np.random.random(ns.shape[1]) - 0.5)
+        return s / np.linalg.norm(s)
+
+    def minimize(self, q):
+        # Use the Gauss-Newton method to solve f(q) == 0.  I could have used
+        # more sophisticated methods from scipy.optimize, but I want to keep
+        # things simple.
+        for i in range(self.max_iter):
+            b = self.f(q)
+            if np.linalg.norm(b) < self.max_err:
+                return q
+            elif i < self.max_iter - 1:
+                q = q - np.linalg.lstsq(self.jac(q), b, rcond=None)[0]
+            else:
+                raise RuntimeError("Gauss-Newton solver exceeded 'max_iter'.")
+
+    def randomwalk(self, q0, max_steps=100, step_length=1, bound=None):
+        # Do a random walk to get a point cloud.
+        qq = np.empty((max_steps, q0.shape[0]))
+        qq[0] = q0
+        for i in range(1, max_steps):
+            dq = step_length * self.step(qq[i - 1])
+            q = self.minimize(qq[i - 1] + dq)
+
+            # If there's a bounding function, make sure that we're
+            # within the bounds.
+            if bound:
+                while not bound(q):
+                    dq = step_length * self.step(q)
+                    q = self.minimize(q + dq)
+
+            qq[i] = q
+
+        return qq

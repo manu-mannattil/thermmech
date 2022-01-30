@@ -24,6 +24,7 @@ __pycache__/
 # Binaries
 *.so
 4bar/4bar_met
+5bar/5bar_met
 origami/origami_met
 origami/free_sing
 tests/utils
