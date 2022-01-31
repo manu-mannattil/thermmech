@@ -4,7 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import mmmpl
-from scipy.special import pbdv
+from scipy.special import pbdv, gamma
 
 # Parameters
 beta = 10 * 1000
@@ -49,6 +49,12 @@ with plt.rc_context(rc):
     a1 = a[(t > -8 * np.pi / 25) & (t < 8 * np.pi / 25)]
     s1 = X**2 * t1**4 - np.log(pbdv(-1 / 2, -2 * X * t1**2)[0] / pbdv(-1 / 2, 0)[0])
     ax.plot(t1, s1, "C3--", label="quartic")
+
+    # Free-energy minima (Eq. S51).
+    # g, pi = gamma(1/4), np.pi
+    # m = np.sqrt(g ** 2 * (g ** 4 + 8 * pi ** 2 - np.sqrt((g ** 4 + 8 * pi ** 2) ** 2 - 256 * pi ** 4)) / (64 * X * pi ** 3))
+    # ax.plot([m, m], [-0.5, 2], "g")
+    # ax.plot([-m, -m], [-0.5, 2], "g")
 
     # Asymptotic (t -> -pi).
     t2 = t[(t > -np.pi) & (t < -17 * np.pi / 25)]

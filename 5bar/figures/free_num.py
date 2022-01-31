@@ -48,7 +48,10 @@ with plt.rc_context(rc):
     a = 1
     extent = np.pi / 4
     Z = np.sqrt(beta * kappa) * a / (2 * np.sqrt(5))
-    hyp = 2 * np.pi * gamma(1/4) ** 2 / (Z * (8 * np.pi ** 2 + gamma(1/4) * 4))
+
+    # Second-order bottom of valley.
+    g, pi = gamma(1/4), np.pi
+    hyp = g ** 2 * (g ** 4 + 8 * pi ** 2 - np.sqrt((g ** 4 + 8 * pi ** 2) ** 2 - 256 * pi ** 4)) / (64 * Z * pi ** 3)
     ax.plot(t[:N//2], hyp / t[:N//2], "w--")
     ax.plot(t[N//2:], hyp / t[N//2:], "w--")
 

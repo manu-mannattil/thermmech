@@ -55,9 +55,12 @@ with plt.rc_context(rc):
     ax.set_yticklabels(labels)
     ax.set_ylim((-extent, extent))
 
-    # Approximate bottom of valley.
-    hyp = 2 * np.pi * gamma(1/4) ** 2 / (Z * (8 * np.pi ** 2 + gamma(1/4) * 4))
-    print(2 * hyp * Z)
+    # First-order bottom of valley.
+    # hyp = 2 * np.pi * gamma(1/4) ** 2 / (Z * (8 * np.pi ** 2 + gamma(1/4) * 4))
+
+    # Second-order bottom of valley.
+    g, pi = gamma(1/4), np.pi
+    hyp = g ** 2 * (g ** 4 + 8 * pi ** 2 - np.sqrt((g ** 4 + 8 * pi ** 2) ** 2 - 256 * pi ** 4)) / (64 * Z * pi ** 3)
     ax.plot(t[:N//2], hyp / t[:N//2], "w--")
     ax.plot(t[N//2:], hyp / t[N//2:], "w--")
 
