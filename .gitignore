@@ -6,6 +6,7 @@ smatter
 
 # Generated data
 *.dat
+*.gz
 *.txt
 
 # Images/media

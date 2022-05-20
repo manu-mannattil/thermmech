@@ -2,6 +2,7 @@ Thermal Mechanisms
 ==================
 
 [![arXiv](https://shields.io/badge/arXiv-2112.04279-b31b1b)](http://arxiv.org/abs/2112.04279)
+[![DOI](https://shields.io/badge/DOI-10.1103/PhysRevLett.128.208005-517e66)](https://doi.org/10.1103/PhysRevLett.128.208005)
 
 Usage
 -----
@@ -15,15 +16,18 @@ Description
 -----------
 
 A [bar-joint mechanism][mech] is a deformable assembly of
-freely-rotating joints connected by stiff bars.  The free-energy
-landscape of such a mechanism is dominated by the neighborhoods of
-points that correspond to singularities in its shape space—the set of
-its lowest-energy states with distinct shapes.  This repository contains
-a set of programs to find the free-energy landscapes of bar-joint
-mechanisms using Monte Carlo methods.  It also contains a set of scripts
-to numerically parameterize one-dimensional shape spaces.  Also included
-are Mathematica notebooks to simplify some of the analytical
-calculations detailed in the paper.
+freely-rotating joints connected by stiff bars.  When the constraints in
+a mechanism cease to be linearly independent, singularities can appear
+in its shape space, which is the part of its configuration space after
+discarding rigid motions.  The free-energy landscape of a mechanism at
+low temperatures is then dominated by the neighborhoods of points that
+correspond to these singularities.
+
+This repository contains a set of programs to find the free-energy
+landscapes of bar-joint mechanisms using Monte Carlo methods.  It also
+contains a set of scripts to numerically parameterize one-dimensional
+shape spaces.  Also included are Mathematica notebooks to simplify some
+of the analytical calculations detailed in the paper.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/manu-mannattil/assets/master/thermmech/4bar.gif" alt="Four-bar linkage animation"/>
