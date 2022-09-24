@@ -3,7 +3,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import mmmpl
+import charu
 from scipy.special import pbdv, gamma
 
 # Parameters
@@ -19,9 +19,9 @@ Y = np.abs((lamb-1) / (lamb+1))
 t, a = np.loadtxt("../data/4bar_free_2.dat", unpack=True)
 
 rc = {
-    "mmmpl.doc": "aps",
-    "mmmpl.tex": True,
-    "mmmpl.tex.font": "fourier",
+    "charu.doc": "aps",
+    "charu.tex": True,
+    "charu.tex.font": "fourier",
     "figure.figsize": [3.6, 2.2]
 }
 
@@ -30,7 +30,7 @@ with plt.rc_context(rc):
 
     ax.set_xlabel(r"$\theta_1$")
     ax.set_xlim((-np.pi, np.pi))
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 5, np.pi, r"\pi")
     ax.set_xticks(ticks)
     ax.set_xticklabels(labels)
 
@@ -82,7 +82,7 @@ with plt.rc_context(rc):
     inset.tick_params(axis="both", which="major", pad=1)
     inset.set_xlabel(r"$\theta_1$", labelpad=1)
     inset.set_xlim(-np.pi, np.pi)
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 3, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 3, np.pi, divstr=r"\pi")
     inset.set_xticks(ticks)
     inset.set_xticklabels(labels)
     inset.set_ylim(0, 1)

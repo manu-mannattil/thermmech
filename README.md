@@ -10,7 +10,7 @@ Usage
 The programs and scripts in this repository require a C++11 compiler,
 the standard Python scientific stack ([NumPy][numpy] + [SciPy][scipy])
 and [Numba][numba].  Plotting requires [Matplotlib][mpl] and
-[mmmpl][mmmpl].
+[charu][charu].
 
 Description
 -----------
@@ -46,7 +46,7 @@ details.
 
 [4bar]: https://en.wikipedia.org/wiki/Four-bar_linkage
 [mech]: https://en.wikipedia.org/wiki/Mechanism_(engineering)
-[mmmpl]: https://github.com/manu-mannattil/mmmpl
+[charu]: https://github.com/manu-mannattil/charu
 [mpl]: https://matplotlib.org
 [numba]: https://numba.pydata.org
 [numpy]: https://numpy.org

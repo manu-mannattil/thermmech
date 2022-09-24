@@ -3,12 +3,12 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import mmmpl
+import charu
 
 rc = {
-    "mmmpl.doc": "aps",
-    "mmmpl.tex": True,
-    "mmmpl.tex.font": "fourier",
+    "charu.doc": "aps",
+    "charu.tex": True,
+    "charu.tex.font": "fourier",
     "figure.figsize": [3.06, 1.87]
 }
 
@@ -17,7 +17,7 @@ with plt.rc_context(rc):
 
     ax.set_xlabel(r"$\theta$")
     ax.set_xlim((-np.pi, np.pi))
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 5, np.pi, r"\pi")
     ax.set_xticks(ticks)
     ax.set_xticklabels(labels)
 

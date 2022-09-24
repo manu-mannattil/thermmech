@@ -3,13 +3,13 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import mmmpl
+import charu
 from origami import *
 
 rc = {
-    "mmmpl.doc": "aps",
-    "mmmpl.tex": True,
-    "mmmpl.tex.font": "fourier",
+    "charu.doc": "aps",
+    "charu.tex": True,
+    "charu.tex.font": "fourier",
     "figure.figsize": [2.75, 1.7]
 }
 
@@ -45,7 +45,7 @@ with plt.rc_context(rc):
 
     ax.set_xlabel(r"$\rho_1$")
     ax.set_xlim((-180, 180))
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
     ax.set_xticks(ticks * 180 / np.pi)
     ax.set_xticklabels(labels)
 
@@ -62,7 +62,7 @@ with plt.rc_context(rc):
     inset.tick_params(axis="both", which="major", pad=1.2)
     inset.set_xlabel(r"$\rho_1$", labelpad=1)
     inset.set_xlim(-180, 180)
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 3, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 3, np.pi, divstr=r"\pi")
     inset.set_xticks(ticks * 180 / np.pi)
     inset.set_xticklabels(labels)
     inset.set_ylim((0, 1))

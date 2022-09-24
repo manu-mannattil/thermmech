@@ -3,14 +3,14 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import mmmpl
+import charu
 from origami import *
 
 rc = {
-    "mmmpl.doc": "aps",
-    "mmmpl.square": 0,
-    "mmmpl.tex": True,
-    "mmmpl.tex.font": "fourier",
+    "charu.doc": "aps",
+    "charu.square": 0,
+    "charu.tex": True,
+    "charu.tex.font": "fourier",
     "xtick.minor.visible": False,
     "ytick.minor.visible": False,
     "figure.figsize": [2.75, 1.7]
@@ -38,17 +38,17 @@ with plt.rc_context(rc):
         ax.plot(aa[:, i], aa[:, j], aa[:, k], "k-")
 
     ax.set_xlim3d(-190, 190)
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
     ax.set_xticks(ticks * 180 / np.pi)
     ax.set_xticklabels(labels)
 
     ax.set_ylim3d(-120, 120)
-    ticks, labels = mmmpl.ticklabels(-np.pi/2, np.pi/2, 3, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi/2, np.pi/2, 3, np.pi, divstr=r"\pi")
     ax.set_yticks(ticks * 180 / np.pi)
     ax.set_yticklabels(labels)
 
     ax.set_zlim3d(-120, 120)
-    ticks, labels = mmmpl.ticklabels(-np.pi/2, np.pi/2, 5, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi/2, np.pi/2, 5, np.pi, divstr=r"\pi")
     ax.set_zticks(ticks * 180 / np.pi)
     ax.set_zticklabels(labels)
 

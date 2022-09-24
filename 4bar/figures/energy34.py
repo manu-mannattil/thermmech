@@ -3,17 +3,17 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import mmmpl
+import charu
 
 def energy(x, y):
     """Energy of bar 3-4."""
     return ((2 + np.cos(y) - np.cos(x)) ** 2 + (np.sin(y) - np.sin(x)) ** 2 - 4) ** 2 / 32
 
 rc = {
-    "mmmpl.doc": "aps",
-    "mmmpl.square": True,
-    "mmmpl.tex": True,
-    "mmmpl.tex.font": "fourier",
+    "charu.doc": "aps",
+    "charu.square": True,
+    "charu.tex": True,
+    "charu.tex.font": "fourier",
 }
 
 with plt.rc_context(rc):

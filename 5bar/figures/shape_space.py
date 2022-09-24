@@ -3,16 +3,16 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import mmmpl
+import charu
 from matplotlib.colors import LinearSegmentedColormap
 from mpl_toolkits.mplot3d import axes3d
 from skimage import measure
 
 rc = {
-    "mmmpl.doc": "aps",
-    "mmmpl.square": 0,
-    "mmmpl.tex": True,
-    "mmmpl.tex.font": "fourier",
+    "charu.doc": "aps",
+    "charu.square": 0,
+    "charu.tex": True,
+    "charu.tex.font": "fourier",
     "xtick.minor.visible": False,
     "ytick.minor.visible": False,
     "figure.figsize": [2.25, 2.0]
@@ -61,17 +61,17 @@ with plt.rc_context(rc):
     )
 
     ax.set_xlim3d(-np.pi - 0.5, np.pi + 0.5)
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
     ax.set_xticks(ticks)
     ax.set_xticklabels(labels)
 
     ax.set_ylim3d(-np.pi - 0.5, np.pi + 0.5)
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 5, np.pi, divstr=r"\pi")
     ax.set_yticks(ticks)
     ax.set_yticklabels(labels)
 
     ax.set_zlim3d(-np.pi - 0.5, np.pi + 0.5)
-    ticks, labels = mmmpl.ticklabels(-np.pi, np.pi, 3, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-np.pi, np.pi, 3, np.pi, divstr=r"\pi")
     ax.set_zticks(ticks)
     ax.set_zticklabels(labels)
 

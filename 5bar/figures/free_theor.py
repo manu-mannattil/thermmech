@@ -3,7 +3,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import mmmpl
+import charu
 from scipy.special import pbdv, gamma
 from matplotlib.colors import LinearSegmentedColormap
 
@@ -13,10 +13,10 @@ bluesmoke = LinearSegmentedColormap.from_list(
 )
 
 rc = {
-    "mmmpl.doc": "aps",
-    "mmmpl.square": 0,
-    "mmmpl.tex.font": "fourier",
-    "mmmpl.tex": True,
+    "charu.doc": "aps",
+    "charu.square": 0,
+    "charu.tex.font": "fourier",
+    "charu.tex": True,
     "xtick.minor.visible": False,
     "ytick.minor.visible": False,
     "figure.figsize": [1.8, 1.8]
@@ -44,13 +44,13 @@ with plt.rc_context(rc):
     # fig.colorbar(pcm, ax=ax, location='bottom')
 
     ax.set_xlabel(r"$\zeta_1$", rotation=0)
-    ticks, labels = mmmpl.ticklabels(-extent, extent, 5, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-extent, extent, 5, np.pi, divstr=r"\pi")
     ax.set_xticks(ticks)
     ax.set_xticklabels(labels)
     ax.set_xlim((-extent, extent))
 
     ax.set_ylabel(r"$\zeta_2$", labelpad=0, rotation=0)
-    ticks, labels = mmmpl.ticklabels(-extent, extent, 5, np.pi, divstr=r"\pi")
+    ticks, labels = charu.ticklabels(-extent, extent, 5, np.pi, divstr=r"\pi")
     ax.set_yticks(ticks)
     ax.set_yticklabels(labels)
     ax.set_ylim((-extent, extent))
